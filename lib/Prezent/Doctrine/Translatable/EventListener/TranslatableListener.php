@@ -36,12 +36,27 @@ class TranslatableListener implements EventSubscriber
     /**
      * @var string Locale to use for translations
      */
-    private $currentLocale = 'en';
+    private $currentLocale;
+
+    /**
+     * @var callable Locale resolver to get the locale to use for translations
+     */
+    private $currentLocaleResolver;
 
     /**
      * @var string Locale to use when the current locale is not available
      */
-    private $fallbackLocale = 'en';
+    private $fallbackLocale;
+
+    /**
+     * @var callable Locale resolver to get the locale to use for translations when the current locale is not available
+     */
+    private $fallbackLocaleResolver;
+
+    /**
+     * @var string Locale to use when the current locale is not available
+     */
+    private $defaultLocale = 'en';
 
     /**
      * @var MetadataFactory
@@ -70,9 +85,18 @@ class TranslatableListener implements EventSubscriber
      */
     public function getCurrentLocale()
     {
-        return $this->currentLocale;
+        if ($this->currentLocale) {
+            return $this->currentLocale;
+        }
+        if (is_callable($this->currentLocaleResolver)) {
+            $locale = call_user_func($this->currentLocaleResolver);
+            if ($locale) {
+                return $locale;
+            }
+        }
+        return $this->getDefaultLocale();
     }
-    
+
     /**
      * Set the current locale
      *
@@ -86,15 +110,36 @@ class TranslatableListener implements EventSubscriber
     }
 
     /**
+     * Set the current locale resolver
+     *
+     * @param callable $currentLocaleResolver
+     * @return self
+     */
+    public function setCurrentLocaleResolver($currentLocaleResolver)
+    {
+        $this->currentLocaleResolver = $currentLocaleResolver;
+        return $this;
+    }
+
+    /**
      * Get the fallback locale
      *
      * @return string
      */
     public function getFallbackLocale()
     {
-        return $this->fallbackLocale;
+        if ($this->fallbackLocale) {
+            return $this->fallbackLocale;
+        }
+        if (is_callable($this->fallbackLocaleResolver)) {
+            $locale = call_user_func($this->fallbackLocaleResolver);
+            if ($locale) {
+                return $locale;
+            }
+        }
+        return $this->getDefaultLocale();
     }
-    
+
     /**
      * Set the fallback locale
      *
@@ -104,6 +149,40 @@ class TranslatableListener implements EventSubscriber
     public function setFallbackLocale($fallbackLocale)
     {
         $this->fallbackLocale = $fallbackLocale;
+        return $this;
+    }
+
+    /**
+     * Set the fallback locale resolver
+     *
+     * @param callable $fallbackLocaleResolver
+     * @return self
+     */
+    public function setFallbackLocaleResolver($fallbackLocaleResolver)
+    {
+        $this->fallbackLocaleResolver = $fallbackLocaleResolver;
+        return $this;
+    }
+
+    /**
+     * Get the default locale
+     *
+     * @return string
+     */
+    public function getDefaultLocale()
+    {
+        return $this->defaultLocale;
+    }
+
+    /**
+     * Set the default locale
+     *
+     * @param string $defaultLocale
+     * @return self
+     */
+    public function setDefaultLocale($defaultLocale)
+    {
+        $this->defaultLocale = $defaultLocale;
         return $this;
     }
 

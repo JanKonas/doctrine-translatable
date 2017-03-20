@@ -40,27 +40,23 @@ class Mapped implements TranslatableInterface
         $this->translations = new ArrayCollection();
     }
 
-    public function getTranslations()
+    public function getTranslations(): array
     {
-        return $this->translations;
+        return $this->translations->toArray();
     }
     
-    public function addTranslation(TranslationInterface $translation)
+    public function addTranslation(TranslationInterface $translation): void
     {
         if (!$this->translations->contains($translation)) {
             $this->translations[] = $translation;
             $translation->setTranslatable($this);
         }
-    
-        return $this;
     }
     
-    public function removeTranslation(TranslationInterface $translation)
+    public function removeTranslation(TranslationInterface $translation): void
     {
         if ($this->translations->removeElement($translation)) {
             $translation->setTranslatable(null);
         }
-    
-        return $this;
     }
 }

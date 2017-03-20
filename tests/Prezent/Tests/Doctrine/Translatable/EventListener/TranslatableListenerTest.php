@@ -51,16 +51,16 @@ class TranslatableListenerTest extends ORMTestCase
                  ->setFallbackLocale('en');
 
         $en = new $translationClass();
-        $en->setLocale('en')
-           ->setName('foo');
+        $en->setLocale('en');
+        $en->setName('foo');
 
         $de = new $translationClass();
-        $de->setLocale('de')
-           ->setName('bar');
+        $de->setLocale('de');
+		$de->setName('bar');
 
         $entity = new $translatableClass();
-        $entity->addTranslation($en)
-               ->addTranslation($de);
+        $entity->addTranslation($en);
+        $entity->addTranslation($de);
 
         $em->persist($entity);
         $em->flush();
@@ -71,9 +71,9 @@ class TranslatableListenerTest extends ORMTestCase
 
         $this->assertNotNull($entity);
         $this->assertEquals('de', $entity->currentLocale);
-        $this->assertEquals('de', $entity->getTranslations()->get($entity->currentLocale)->getLocale());
+        $this->assertEquals('de', $entity->getTranslations()[$entity->currentLocale]->getLocale());
         $this->assertEquals('en', $entity->fallbackLocale);
-        $this->assertEquals('en', $entity->getTranslations()->get($entity->fallbackLocale)->getLocale());
+        $this->assertEquals('en', $entity->getTranslations()[$entity->fallbackLocale]->getLocale());
     }
 
     /**
@@ -90,16 +90,16 @@ class TranslatableListenerTest extends ORMTestCase
         $listener = $this->getTranslatableListener();
 
         $fallback = new $translationClass();
-        $fallback->setLocale($this->getFallbackLocale())
-           ->setName('foo');
+        $fallback->setLocale($this->getFallbackLocale());
+        $fallback->setName('foo');
 
         $current = new $translationClass();
-        $current->setLocale($this->getCurrentLocale())
-           ->setName('bar');
+        $current->setLocale($this->getCurrentLocale());
+        $current->setName('bar');
 
         $entity = new $translatableClass();
-        $entity->addTranslation($fallback)
-               ->addTranslation($current);
+        $entity->addTranslation($fallback);
+        $entity->addTranslation($current);
 
         $em->persist($entity);
         $em->flush();
@@ -113,9 +113,9 @@ class TranslatableListenerTest extends ORMTestCase
 
         $this->assertNotNull($entity);
         $this->assertEquals($this->getCurrentLocale(), $entity->currentLocale);
-        $this->assertEquals($this->getCurrentLocale(), $entity->getTranslations()->get($entity->currentLocale)->getLocale());
+        $this->assertEquals($this->getCurrentLocale(), $entity->getTranslations()[$entity->currentLocale]->getLocale());
         $this->assertEquals($this->getFallbackLocale(), $entity->fallbackLocale);
-        $this->assertEquals($this->getFallbackLocale(), $entity->getTranslations()->get($entity->fallbackLocale)->getLocale());
+        $this->assertEquals($this->getFallbackLocale(), $entity->getTranslations()[$entity->fallbackLocale]->getLocale());
 
         // test 2 - switched current and fallback locales
         $em->clear();
@@ -125,9 +125,9 @@ class TranslatableListenerTest extends ORMTestCase
 
         $this->assertNotNull($entity);
         $this->assertEquals($this->getFallbackLocale(), $entity->currentLocale);
-        $this->assertEquals($this->getFallbackLocale(), $entity->getTranslations()->get($entity->currentLocale)->getLocale());
+        $this->assertEquals($this->getFallbackLocale(), $entity->getTranslations()[$entity->currentLocale]->getLocale());
         $this->assertEquals($this->getCurrentLocale(), $entity->fallbackLocale);
-        $this->assertEquals($this->getCurrentLocale(), $entity->getTranslations()->get($entity->fallbackLocale)->getLocale());
+        $this->assertEquals($this->getCurrentLocale(), $entity->getTranslations()[$entity->fallbackLocale]->getLocale());
     }
 
     public function testLocalePriorities()

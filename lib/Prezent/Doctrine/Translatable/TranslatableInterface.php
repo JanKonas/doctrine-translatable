@@ -16,24 +16,16 @@ interface TranslatableInterface
 {
     /**
      * Get all translations
-     *
-     * @return ArrayCollection
      */
-    public function getTranslations();
+    public function getTranslations(): array;
 
     /**
      * Add a new translation
-     *
-     * @param TranslationInterface $translation
-     * @return self
      */
-    public function addTranslation(TranslationInterface $translation);
+    public function addTranslation(TranslationInterface $translation): void;
 
     /**
      * Remove a translation
-     *
-     * @param TranslationInterface $translation
-     * @return self
      */
-    public function removeTranslation(TranslationInterface $translation);
+    public function removeTranslation(TranslationInterface $translation): void;
 }

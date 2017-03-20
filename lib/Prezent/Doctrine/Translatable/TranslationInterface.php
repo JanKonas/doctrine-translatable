@@ -16,31 +16,21 @@ interface TranslationInterface
 {
     /**
      * Get the translatable object
-     *
-     * @return TranslatableInterface
      */
-    public function getTranslatable();
+    public function getTranslatable(): TranslatableInterface;
 
     /**
      * Set the translatable object
-     *
-     * @param TranslatableInterface $translatable
-     * @return self
      */
-    public function setTranslatable(TranslatableInterface $translatable = null);
+    public function setTranslatable(TranslatableInterface $translatable = null): void;
 
     /**
      * Get the locale
-     *
-     * @return string
      */
-    public function getLocale();
+    public function getLocale(): string;
 
     /**
      * Set the locale
-     *
-     * @param string $locale
-     * @return self
      */
-    public function setLocale($locale);
+    public function setLocale(string $locale): void;
 }

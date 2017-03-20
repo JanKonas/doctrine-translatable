@@ -55,24 +55,19 @@ abstract class AbstractTranslation implements TranslationInterface
 
     /**
      * Get the translatable object
-     *
-     * @return TranslatableInterface
      */
-    public function getTranslatable()
+    public function getTranslatable(): TranslatableInterface
     {
         return $this->translatable;
     }
     
     /**
      * Set the translatable object
-     *
-     * @param TranslatableInterface $translatable
-     * @return self
      */
-    public function setTranslatable(TranslatableInterface $translatable = null)
+    public function setTranslatable(TranslatableInterface $translatable = null): void
     {
         if ($this->translatable == $translatable) {
-            return $this;
+            return;
         }
     
         $old = $this->translatable;
@@ -85,29 +80,21 @@ abstract class AbstractTranslation implements TranslationInterface
         if ($translatable !== null) {
             $translatable->addTranslation($this);
         }
-    
-        return $this;
     }
 
     /**
      * Get the locale
-     *
-     * @return string
      */
-    public function getLocale()
+    public function getLocale(): string
     {
         return $this->locale;
     }
 
     /**
      * Set the locale
-     *
-     * @param string $locale
-     * @return self
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale):void
     {
         $this->locale = $locale;
-        return $this;
     }
 }
